@@ -1,4 +1,5 @@
 <?php
+include "database.php";
 // Counter file path
 $counterFile = "counter.txt";
 
@@ -15,6 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $clickCount++; // Increment the counter
     file_put_contents($counterFile, $clickCount); // Update the counter file
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -25,10 +28,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Button Click Counter</title>
 </head>
 <body>
+    <?php
+    if(!empty($_POST)){
+        
+        $name= $clickCount;
+        $insert="UPDATE click SET number='$name'";
+        if(mysqli_query($connect,$insert)){
+            echo "ok";
+        }else{
+          echo "Registration Faild" ;
+        }
+
+      
+    }
+    ?>
     <h1>PHP Button Click Counter</h1>
-    <p>Button clicked: <strong><?php echo $clickCount; ?></strong> times</p>
+    <p>Button clicked: <strong><?php echo $clickCount; ?></strong></p>
     <form method="POST">
-        <button type="submit">Click Me!</button>
+        <button name="name" value="<?php echo $clickCount; ?>" type="submit">Click Me!</button>
     </form>
 </body>
 </html>
